@@ -1,14 +1,20 @@
 package pt.ual.pp.models;
 
+import pt.ual.pp.controls.App;
+
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MThread extends Thread {
     private Map<Integer, Zona> mapZonas;
+    private Map<Integer, List<Double>> lineTimeInZone = new TreeMap<>();
     private Modelo modelo;
 
-    public MThread(Modelo modelo, Map<Integer, Zona> mapZonas) {
+    public MThread(Modelo modelo, Map<Integer, Zona> mapZonas, Map<Integer, List<Double>> lineTimeInZone) {
         this.mapZonas = mapZonas;
         this.modelo = modelo;
+        this.lineTimeInZone = lineTimeInZone;
     }
 
     @Override
@@ -25,13 +31,16 @@ public class MThread extends Thread {
 //            System.out.println("Modelo " + modelo +  "zona " + i + " " + duration);
             // Passar para o modelo esse tempo
 //            modelo.addTimePerBuild(modelo.sumTimeZone() + duration * 60);
+            double timeToSleep = modelo.timeZone.get(i) * 60;
             try {
-                double timeToSleep = modelo.timeZone.get(i) * 60;
                 sleep((long) timeToSleep);
 //                System.out.println("Tempo dormindo " + i + " " + timeToSleep);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            int index = mapZonas.get(i).getQuantity()-1;
+            double sum = lineTimeInZone.get(i).get(index) + timeToSleep;
+            lineTimeInZone.get(i).set(index, sum);
             mapZonas.get(i).leaveZone();
         }
         modelo.addTimePerBuild(modelo.sumTimeZone() + durationTotal);

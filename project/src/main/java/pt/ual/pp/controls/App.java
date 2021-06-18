@@ -15,17 +15,35 @@ public class App {
         Map<Integer, Zona> zonas = new TreeMap<>();
         Random random = new Random();
 
-        Zona zona1 = new Zona(1);
-        Zona zona2 = new Zona(1);
-        Zona zona3 = new Zona(1);
-        Zona zona4 = new Zona(1);
-        Zona zona5 = new Zona(1);
+        Scanner sc = new Scanner(System.in);
 
-        zonas.put(1, zona1);
-        zonas.put(2, zona2);
-        zonas.put(3, zona3);
-        zonas.put(4, zona4);
-        zonas.put(5, zona5);
+        Map<Integer, List<Double>> lineTimeInZone = new TreeMap<>();
+
+
+        for(int i = 0; i < 5; i++) {
+            System.out.println("Zona " + (i+1) + ". Indique o numero de linhas: ");
+            int lines = Integer.parseInt(sc.nextLine());
+            zonas.put(i+1, new Zona(lines));
+            for(int j = 0; j < lines; j++) {
+                if(!lineTimeInZone.containsKey(i+1)) {
+                    lineTimeInZone.put(i+1, new ArrayList<>());
+                }
+                lineTimeInZone.get(i+1).add(0.0);
+            }
+        }
+
+
+//        Zona zona1 = new Zona(1);
+//        Zona zona2 = new Zona(1);
+//        Zona zona3 = new Zona(1);
+//        Zona zona4 = new Zona(1);
+//        Zona zona5 = new Zona(1);
+//
+//        zonas.put(1, zona1);
+//        zonas.put(2, zona2);
+//        zonas.put(3, zona3);
+//        zonas.put(4, zona4);
+//        zonas.put(5, zona5);
 
         Modelo modelo1 = new Modelo1(3, 7, random);
         Modelo modelo2 = new Modelo2(4, 6, random);
@@ -68,7 +86,7 @@ public class App {
 
                 List<Thread> threads = new ArrayList<>();
                 for(Integer j : diaMap.get(i)) {
-                    threads.add(new MThread(modelos.get(j), zonas));
+                    threads.add(new MThread(modelos.get(j), zonas, lineTimeInZone));
                 }
                 for(Thread t : threads) {
                     t.start();
@@ -89,16 +107,27 @@ public class App {
         System.out.println("Modelo 2 tempo medio:" + modelo2.buildAveragedTime());
         System.out.println("Modelo 3 tempo medio:" + modelo3.buildAveragedTime());
 
-
+        System.out.println();
 
         for(Integer i : modelos.keySet()) {
             Map<Integer, Double> waitTimeAvarageModelo = modelos.get(i).waitTimeAvarage();
-            System.out.println("Modelo " + i + " tempo entre zonas:");
+            System.out.println("Modelo " + i + " tempo medio entre zonas:");
             for(int j : waitTimeAvarageModelo.keySet()) {
                 System.out.println("Zona " + j + " Tempo: " + waitTimeAvarageModelo.get(j));
             }
         }
 
+        System.out.println();
+
+        System.out.println("Percentagem de tempo de utilizacao de cada linha de trabalho");
+        int minuteInYear = 365 * 24 * 60;
+        for(int zona : lineTimeInZone.keySet()) {
+            for(int i = 0; i < lineTimeInZone.get(zona).size(); i++) {
+                System.out.print("Zona " + zona + ". Linha " + (i+1) + ": ");
+                System.out.println(String.format("%.2f", lineTimeInZone.get(zona).get(i) / minuteInYear * 100) + "%");
+            }
+            System.out.println();
+        }
 
     }
 }
