@@ -23,7 +23,7 @@ public class Modelo {
     public List<Integer> daysOfWork(int lastDay) {
         List<Integer> daysList = new ArrayList<>();
         int day = 0;
-        while(day < lastDay) {
+        while(day <= lastDay) {
             int nextDay = random.nextInt(time) + push;
             day += nextDay;
             daysList.add(day);

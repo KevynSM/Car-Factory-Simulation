@@ -19,7 +19,6 @@ public class App {
 
         Map<Integer, List<Double>> lineTimeInZone = new TreeMap<>();
 
-
         for(int i = 0; i < 5; i++) {
             System.out.println("Zona " + (i+1) + ". Indique o numero de linhas: ");
             int lines = Integer.parseInt(sc.nextLine());
@@ -32,18 +31,6 @@ public class App {
             }
         }
 
-
-//        Zona zona1 = new Zona(1);
-//        Zona zona2 = new Zona(1);
-//        Zona zona3 = new Zona(1);
-//        Zona zona4 = new Zona(1);
-//        Zona zona5 = new Zona(1);
-//
-//        zonas.put(1, zona1);
-//        zonas.put(2, zona2);
-//        zonas.put(3, zona3);
-//        zonas.put(4, zona4);
-//        zonas.put(5, zona5);
 
         Modelo modelo1 = new Modelo1(3, 7, random);
         Modelo modelo2 = new Modelo2(4, 6, random);
@@ -103,9 +90,9 @@ public class App {
 
 
 
-        System.out.println("Modelo 1 tempo medio:" + modelo1.buildAveragedTime());
-        System.out.println("Modelo 2 tempo medio:" + modelo2.buildAveragedTime());
-        System.out.println("Modelo 3 tempo medio:" + modelo3.buildAveragedTime());
+        System.out.println("Modelo 1 tempo medio:" + String.format("%.2f", modelo1.buildAveragedTime()));
+        System.out.println("Modelo 2 tempo medio:" + String.format("%.2f", modelo2.buildAveragedTime()));
+        System.out.println("Modelo 3 tempo medio:" + String.format("%.2f", modelo3.buildAveragedTime()));
 
         System.out.println();
 
@@ -113,18 +100,32 @@ public class App {
             Map<Integer, Double> waitTimeAvarageModelo = modelos.get(i).waitTimeAvarage();
             System.out.println("Modelo " + i + " tempo medio entre zonas:");
             for(int j : waitTimeAvarageModelo.keySet()) {
-                System.out.println("Zona " + j + " Tempo: " + waitTimeAvarageModelo.get(j));
+                System.out.println("Zona " + j + " Tempo: " + String.format("%.2f",waitTimeAvarageModelo.get(j)));
             }
         }
 
         System.out.println();
 
-        System.out.println("Percentagem de tempo de utilizacao de cada linha de trabalho");
-        int minuteInYear = 365 * 24 * 60;
+
+        int lastDayOfWork = 0;
+        int firstDayOfWork = 0;
+        int k = 0;
+        for(Integer i : diaMap.keySet()) {
+            k++;
+            if(k == 1) firstDayOfWork = i;
+            lastDayOfWork = i;
+        }
+        int daysOfWork = lastDayOfWork - firstDayOfWork;
+        System.out.println("Dias de trabalho no ano: " + daysOfWork);
+        System.out.println("As linhas comecam a trabalhar assim que a primeira encomenda chega e " +
+                            "terminam assim que a ultima encomenda termina de ser produzida.");
+        System.out.println("Percentagem de tempo de utilizacao de cada linha de trabalho " +
+                            " em relacao a todo o periodo do ano");
+        int minutesInYearOfWork = daysOfWork * 24 * 60;
         for(int zona : lineTimeInZone.keySet()) {
             for(int i = 0; i < lineTimeInZone.get(zona).size(); i++) {
                 System.out.print("Zona " + zona + ". Linha " + (i+1) + ": ");
-                System.out.println(String.format("%.2f", lineTimeInZone.get(zona).get(i) / minuteInYear * 100) + "%");
+                System.out.println(String.format("%.2f", lineTimeInZone.get(zona).get(i) / minutesInYearOfWork * 100) + "%");
             }
             System.out.println();
         }
