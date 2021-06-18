@@ -9,6 +9,8 @@ public class Modelo {
     protected Map<Integer, Double> timeZone = new TreeMap<>();
     protected List<Integer> ordemZone = new ArrayList<>();
     private List<Double> timePerBuild = new ArrayList<>();
+    protected Map<Integer, List<Double>> timeWaitBeforeEnterZone = new TreeMap<>();
+    private int waitQuantity = 0;
     private int buildQuantity = 0;
 
 
@@ -29,10 +31,10 @@ public class Modelo {
         return daysList;
     }
 
-    public Double timePerBuild() {
+    public Double sumTimeZone() {
         Double total = 0.0;
         for(Integer i : ordemZone) {
-            total = timeZone.get(i);
+            total += timeZone.get(i);
         }
         return total * 60;
     }
@@ -45,5 +47,28 @@ public class Modelo {
 
     public Double buildAveragedTime() {
         return timePerBuild.stream().mapToDouble(a -> a).sum()/buildQuantity;
+    }
+
+    public void addTimeWaitBeforeEnterZone(int zone, double time) {
+        timeWaitBeforeEnterZone.get(zone).add(time);
+        waitQuantity++;
+    }
+
+    public Map<Integer, Double> waitTimeAvarage() {
+        Map<Integer, Double> map = new TreeMap<>();
+        for(int i : timeWaitBeforeEnterZone.keySet()) {
+            double total = 0;
+            double avarage = 0;
+            for(int j = 0; j < timeWaitBeforeEnterZone.get(i).size(); j++) {
+                total += timeWaitBeforeEnterZone.get(i).get(j);
+                if(j == timeWaitBeforeEnterZone.get(i).size() - 1) {
+                    avarage = total / j;
+//                    System.out.println("AVARAGE: " + avarage);
+                }
+            }
+
+            map.put(i, avarage);
+        }
+        return map;
     }
 }

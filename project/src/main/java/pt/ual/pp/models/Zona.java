@@ -21,10 +21,15 @@ public class Zona {
             }
         }
         quantity++;
+
     }
 
     public synchronized void leaveZone() {
         quantity--;
         notify();
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }

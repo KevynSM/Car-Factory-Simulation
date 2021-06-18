@@ -13,17 +13,27 @@ public class MThread extends Thread {
 
     @Override
     public void run() {
+        long durationTotal = 0;
         for(Integer i : modelo.ordemZone) {
-            // Tempo antes?
+//            System.out.println("Zona " + i +  "quantity " + mapZonas.get(i).getQuantity());
+            long startTime = System.currentTimeMillis();
             mapZonas.get(i).enterZona();
-            // Tempo depois?
+            long endTime = System.currentTimeMillis();
+            long duration = endTime - startTime;
+            modelo.addTimeWaitBeforeEnterZone(i, (double) duration);
+            durationTotal += (endTime - startTime);
+//            System.out.println("Modelo " + modelo +  "zona " + i + " " + duration);
             // Passar para o modelo esse tempo
+//            modelo.addTimePerBuild(modelo.sumTimeZone() + duration * 60);
             try {
-                sleep(modelo.timeZone.get(i).longValue());
+                double timeToSleep = modelo.timeZone.get(i) * 60;
+                sleep((long) timeToSleep);
+//                System.out.println("Tempo dormindo " + i + " " + timeToSleep);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             mapZonas.get(i).leaveZone();
         }
+        modelo.addTimePerBuild(modelo.sumTimeZone() + durationTotal);
     }
 }
