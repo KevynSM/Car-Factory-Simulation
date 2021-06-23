@@ -68,6 +68,10 @@ public class App {
             if(diaMap.get(i).size() == 1) {
                 modelos.get(diaMap.get(i).get(0)).addTimePerBuild(modelos.get(diaMap.get(i).get(0)).sumTimeZone());
 //                System.out.println("Modelo " + diaMap.get(i).get(0) + ": " + modelos.get(diaMap.get(i).get(0)).buildAveragedTime() + " minutos");
+                for(Integer j : modelos.get(diaMap.get(i).get(0)).getOrdemZone()) {
+                    double sum = lineTimeInZone.get(j).get(0) + modelos.get(diaMap.get(i).get(0)).getTimeZone().get(j) * 60;
+                    lineTimeInZone.get(j).set(0, sum);
+                }
             }
             else {
 

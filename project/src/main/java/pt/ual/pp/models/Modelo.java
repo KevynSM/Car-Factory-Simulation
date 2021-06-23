@@ -71,4 +71,12 @@ public class Modelo {
         }
         return map;
     }
+
+    public List<Integer> getOrdemZone() {
+        return ordemZone;
+    }
+
+    public Map<Integer, Double> getTimeZone() {
+        return timeZone;
+    }
 }
