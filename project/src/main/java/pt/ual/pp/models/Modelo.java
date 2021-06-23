@@ -54,7 +54,18 @@ public class Modelo {
         waitQuantity++;
     }
 
-    public Map<Integer, Double> waitTimeAvarage() {
+    public Double waitTimeAvarage() {
+        double total = 0;
+        for(int i : timeWaitBeforeEnterZone.keySet()) {
+            for(int j = 0; j < timeWaitBeforeEnterZone.get(i).size(); j++) {
+                total += timeWaitBeforeEnterZone.get(i).get(j);
+            }
+        }
+
+        return total / waitQuantity;
+    }
+
+    public Map<Integer, Double> waitTimeAvaragePerZone() {
         Map<Integer, Double> map = new TreeMap<>();
         for(int i : timeWaitBeforeEnterZone.keySet()) {
             double total = 0;
@@ -63,7 +74,6 @@ public class Modelo {
                 total += timeWaitBeforeEnterZone.get(i).get(j);
                 if(j == timeWaitBeforeEnterZone.get(i).size() - 1) {
                     avarage = total / j;
-//                    System.out.println("AVARAGE: " + avarage);
                 }
             }
 
