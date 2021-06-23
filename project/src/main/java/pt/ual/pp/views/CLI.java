@@ -1,4 +1,6 @@
-package pt.ual.pp.controls;
+package pt.ual.pp.views;
+
+import pt.ual.pp.controls.Fabrica;
 
 import java.util.*;
 
@@ -6,7 +8,7 @@ import java.util.*;
  * Hello world!
  *
  */
-public class App {
+public class CLI {
     public static void main( String[] args ) {
         Scanner sc = new Scanner(System.in);
         Map<Integer, ArrayList<Integer>> ritmoModelos = new TreeMap<>();

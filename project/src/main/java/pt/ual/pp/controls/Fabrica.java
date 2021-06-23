@@ -12,7 +12,7 @@ public class Fabrica {
 
     private Map<Integer, List<Double>> lineTimeInZone = new TreeMap<>();
 
-    private Map<Integer, ArrayList<Integer>> ritmoModelos = new TreeMap<>();
+    private Map<Integer, ArrayList<Integer>> ritmoModelos;
 
     public Fabrica(Map<Integer, ArrayList<Integer>> ritmoModelos) {
         this.ritmoModelos = ritmoModelos;

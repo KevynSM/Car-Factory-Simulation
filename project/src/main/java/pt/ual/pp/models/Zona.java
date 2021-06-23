@@ -1,7 +1,5 @@
 package pt.ual.pp.models;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Zona {
     private int quantityMax;
@@ -12,7 +10,7 @@ public class Zona {
         this.quantity = 0;
     }
 
-    public synchronized void enterZona() {
+    public synchronized void enterZone() {
         while(quantity >= quantityMax) {
             try {
                 wait();

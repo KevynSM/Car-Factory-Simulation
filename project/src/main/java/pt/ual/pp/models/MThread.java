@@ -1,7 +1,5 @@
 package pt.ual.pp.models;
 
-import pt.ual.pp.controls.App;
-
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -23,7 +21,7 @@ public class MThread extends Thread {
         for(Integer i : modelo.ordemZone) {
 //            System.out.println("Zona " + i +  "quantity " + mapZonas.get(i).getQuantity());
             long startTime = System.currentTimeMillis();
-            mapZonas.get(i).enterZona();
+            mapZonas.get(i).enterZone();
             long endTime = System.currentTimeMillis();
             long duration = endTime - startTime;
             modelo.addTimeWaitBeforeEnterZone(i, (double) duration);
